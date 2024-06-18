@@ -9,9 +9,11 @@ namespace Domain.Entities
 {
     public class UsuariosResponse
     {
-        public string Nombre { get; set; }
-        public string User { get; set; }
-        public string Password { get; set; }
-        public int FkRol { get; set; }
+      
+        public string nombre { get; set; }
+        public string correo { get; set; }
+        public string password { get; set; }
+        public string telefono { get; set; }
+        public int rol_id { get; set; }
     }
 }

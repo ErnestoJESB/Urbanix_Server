@@ -1,5 +1,7 @@
-﻿using Domain.Entities;
+﻿using Dapper;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 using WebApi.Context;
 
 namespace WebApi.Services
@@ -31,24 +33,33 @@ namespace WebApi.Services
         {
             try
             {
-                Usuario usuario = new Usuario()
+                var parameters = new DynamicParameters();
+                parameters.Add("@nombre", request.nombre, DbType.String);
+                parameters.Add("@correo", request.correo, DbType.String);
+                parameters.Add("@password", request.password, DbType.String);
+                parameters.Add("@telefono", request.telefono, DbType.String);
+                parameters.Add("@rol_id", request.rol_id, DbType.Int32);
+                parameters.Add("@resultado", dbType: DbType.String, size: 250, direction: ParameterDirection.Output);
+
+                using (var connection = _context.Database.GetDbConnection())
                 {
-                    Nombre = request.Nombre,
-                    User = request.User,
-                    Password = request.Password,
-                    FkRol = request.FkRol
-                };
+                    await connection.ExecuteAsync("spRegisterUser", parameters, commandType: CommandType.StoredProcedure);
+                    var resultado = parameters.Get<string>("@resultado");
 
-                _context.Usuarios.Add(usuario);
-                await _context.SaveChangesAsync();
+                    if (resultado.StartsWith("Error"))
+                    {
+                        return new Response<UsuariosResponse>(null, resultado);
+                    }
 
-                return new Response<UsuariosResponse>(request);
+                    return new Response<UsuariosResponse>(request, "Usuario registrado exitosamente.");
+                }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-                throw new Exception("Sucedio un error macabro"+ex.Message);
+                throw new Exception("Sucedió un error macabro: " + ex.Message);
             }
         }
+
         //Actualizar usuario
         public async Task<Response<UsuariosResponse>> ActualizarUsuario(int id, UsuariosResponse request)
         {
@@ -60,10 +71,11 @@ namespace WebApi.Services
                     return new Response<UsuariosResponse>("No existe ese usuario");
                 }
 
-                usuario.Nombre = request.Nombre;
-                usuario.User = request.User;
-                usuario.Password = request.Password;
-                usuario.FkRol = request.FkRol;
+                usuario.nombre = request.nombre;
+                usuario.email = request.correo;
+                usuario.password = request.password;
+                usuario.FkRol = request.rol_id;
+
 
                 _context.Usuarios.Update(usuario);
                 await _context.SaveChangesAsync();
@@ -94,7 +106,36 @@ namespace WebApi.Services
                 throw new Exception("Error al eliminar el usuario: " + ex.Message);
             }
         }
-        
+
+        public async Task<Response<string>> LoginUser(LoginUser request)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@correo", request.email, DbType.String);
+                parameters.Add("@password", request.password, DbType.String);
+                parameters.Add("@resultado", dbType: DbType.String, size: 250, direction: ParameterDirection.Output);
+
+                using (var connection = _context.Database.GetDbConnection())
+                {
+                    await connection.ExecuteAsync("spLoginUser", parameters, commandType: CommandType.StoredProcedure);
+                    var resultado = parameters.Get<string>("@resultado");
+
+                    if (resultado.StartsWith("Error"))
+                    {
+                        return new Response<string>(resultado);
+                    }
+
+                    return new Response<string>("Login exitoso.", resultado);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Sucedió un error macabro: " + ex.Message);
+            }
+        }
+
+
         public async Task<Response<Usuario>> GetByID(int id)
         {
             try

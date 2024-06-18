@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Services
 {
@@ -13,5 +14,6 @@ namespace WebApi.Services
         public Task<Response<bool>> EliminarUsuario(int id);
 
         public Task<Response<Usuario>> GetByID(int id);
+        public Task<Response<string>> LoginUser(LoginUser request);
     }
 }
