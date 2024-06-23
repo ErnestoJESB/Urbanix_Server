@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class Autor
+    public class Marca
     {
         [Key]
-        public int PKAutor { get; set; }
-        public string Nombre { get; set; }
-        public string Nacionalidad { get; set; }
+        public int PkMarca { get; set; }
+        public string marca { get; set; }
     }
 }

@@ -28,28 +28,4 @@ namespace Domain.Entities
 
         public double precio { get; set; }
     }
-
-    public class Marca
-    {
-        [Key]
-        public int PkMarca { get; set; }
-        public string marca { get; set; }
-    }
-
-    public class Modelo
-    {
-        [Key]
-        public int PkModelo { get; set; }
-        public string modelo { get; set; }
-        [ForeignKey("Marca")]
-        public int FkMarca { get; set; }
-        public Marca marca { get; set; }
-    }
-
-    public class Categoria
-    {
-        [Key]
-        public int PkCategoria { get; set; }
-        public string categoria { get; set; }
-    }
 }

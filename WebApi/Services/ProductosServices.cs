@@ -1,5 +1,5 @@
 ﻿using Dapper;
-using Domain.DTOs;
+using Domain.DTOs.Productos;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
@@ -35,6 +35,32 @@ namespace WebApi.Services
             catch (Exception ex)
             {
                 throw new Exception("Sucedio un error catastrofico: " + ex.Message);
+            }
+        }
+
+        public async Task<Response<CrearProductoDTO>> CreateProducto(CrearProductoDTO request)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@FkMarca", request.FkMarca, DbType.Int32);
+                parameters.Add("@FkModelo", request.FkModelo, DbType.Int32);
+                parameters.Add("@FkCategoria", request.FkCategoria, DbType.Int32);
+                parameters.Add("@Color", request.Color, DbType.String);
+                parameters.Add("@Size", request.Size, DbType.String);
+                parameters.Add("@Precio", request.Precio, DbType.Double);
+                parameters.Add("@Genero", request.Genero, DbType.String);
+
+                using (var connection = _context.Database.GetDbConnection())
+                {
+                    await connection.ExecuteAsync("spCreateProducto", parameters, commandType: CommandType.StoredProcedure);
+                    return new Response<CrearProductoDTO>(request, "Usuario registrado exitosamente.");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Sucedió un error macabro: " + ex.Message);
             }
         }
 

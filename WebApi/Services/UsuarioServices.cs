@@ -42,7 +42,7 @@ namespace WebApi.Services
                 parameters.Add("@resultado", dbType: DbType.String, size: 250, direction: ParameterDirection.Output);
 
                 using (var connection = _context.Database.GetDbConnection())
-                {
+                {   
                     await connection.ExecuteAsync("spRegisterUser", parameters, commandType: CommandType.StoredProcedure);
                     var resultado = parameters.Get<string>("@resultado");
 

@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Domain.DTOs.Productos;
+using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Context;
 using WebApi.Services;
@@ -19,6 +20,13 @@ namespace WebApi.Controllers
         public async Task<IActionResult> GetProductos()
         {
             var response = await _productosServices.GetProductos();
+            return Ok(response);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateProducto([FromBody] CrearProductoDTO request)
+        {
+            var response = await _productosServices.CreateProducto(request);
             return Ok(response);
         }
 
