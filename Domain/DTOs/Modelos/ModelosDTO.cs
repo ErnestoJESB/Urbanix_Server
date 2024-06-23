@@ -11,5 +11,6 @@ namespace Domain.DTOs.Modelos
     {
         public int PkModelo {  get; set; }
         public string modelo {  get; set; }
+        public string marca {  get; set; }
     }
 }

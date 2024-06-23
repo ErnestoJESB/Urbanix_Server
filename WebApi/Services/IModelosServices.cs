@@ -6,5 +6,7 @@ namespace WebApi.Services
     public interface IModelosServices
     {
         public Task<Response<List<ModelosDTO>>> GetModelos();
+        public Task<Response<CreateModeloDTO>> CreateModelo(CreateModeloDTO request);
+        
     }
 }

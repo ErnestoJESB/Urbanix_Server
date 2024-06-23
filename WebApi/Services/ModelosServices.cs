@@ -34,5 +34,23 @@ namespace WebApi.Services
                 throw new Exception("Sucedio un error catastrofico: " + ex.Message);
             }
         }
+        public async Task<Response<CreateModeloDTO>> CreateModelo(CreateModeloDTO request)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@Nombre", request.Nombre, DbType.String);
+                parameters.Add("@FkMarca", request.FkMarca, DbType.Int32);
+                using (var connection = _context.Database.GetDbConnection())
+                {
+                    await connection.ExecuteAsync("spCreateModelos", parameters, commandType: CommandType.StoredProcedure);
+                    return new Response<CreateModeloDTO>(request, "Modelo registrado exitosamente.");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Sucedio un error catastrofico: " + ex.Message);
+            }
+        }
     }
 }

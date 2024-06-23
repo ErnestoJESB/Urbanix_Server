@@ -14,7 +14,7 @@ namespace Domain.Entities
         public int PkModelo { get; set; }
         public string modelo { get; set; }
         [ForeignKey("Marca")]
-        public int FkMarca { get; set; }
+        public int? FkMarca { get; set; }
         public Marca marca { get; set; }
     }
 }

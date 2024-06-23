@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Domain.DTOs.Categorias;
 using Domain.DTOs.Modelos;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,36 @@ namespace WebApi.Services
                 response = result.ToList();
 
                 return new Response<List<Categoria>>(response);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Sucedio un error catastrofico: " + ex.Message);
+            }
+        }
+        public async Task<Response<CrearCategoriasDTO>> CreateCategoria(CrearCategoriasDTO request)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@Nombre", request.Nombre, DbType.String);
+
+                using (var connection = _context.Database.GetDbConnection())
+                {
+                    await connection.ExecuteAsync("spCreateCategoria", parameters, commandType: CommandType.StoredProcedure);
+                    return new Response<CrearCategoriasDTO>(request, "Categoria registrada exitosamente.");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Sucedio un error catastrofico: " + ex.Message);
+            }
+        }
+        public async Task<Response<Categoria>> GetByID(int id)
+        {
+            try
+            {
+                Categoria res = await _context.Categorias.FirstOrDefaultAsync(x => x.PkCategoria == id);
+                return new Response<Categoria>(res);
             }
             catch (Exception ex)
             {
