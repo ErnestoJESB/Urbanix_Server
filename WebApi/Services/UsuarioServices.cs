@@ -15,19 +15,19 @@ namespace WebApi.Services
             _context = context;
         }
         //Obtencion de todos los usuarios
-        public async Task<Response<List<Usuario>>> GetUsuarios()
-        {
-            try
+            public async Task<Response<List<Usuario>>> GetUsuarios()
             {
-                List<Usuario> response = await _context.Usuarios.Include(y => y.Roles).ToListAsync();
+                try
+                {
+                    List<Usuario> response = await _context.Usuarios.Include(y => y.Roles).ToListAsync();
 
-                return new Response<List<Usuario>>(response);   
+                    return new Response<List<Usuario>>(response);   
+                }
+                catch (Exception ex) 
+                {
+                    throw new Exception("Sucedio un error catastrofico"+ex.Message);
+                }
             }
-            catch (Exception ex) 
-            {
-                throw new Exception("Sucedio un error catastrofico"+ex.Message);
-            }
-        }
         //Crear usuario
         public async Task<Response<UsuariosResponse>> CrearUsuario(UsuariosResponse request)
         {
