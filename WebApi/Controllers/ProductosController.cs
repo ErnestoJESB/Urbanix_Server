@@ -30,5 +30,19 @@ namespace WebApi.Controllers
             return Ok(response);
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateProducto(int id, [FromBody] CrearProductoDTO request)
+        {
+            var response = await _productosServices.UpdateProducto(id, request);
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProducto(int id)
+        {
+            var response = await _productosServices.DeleteProducto(id);
+            return Ok(response);
+        }
+
     }
 }
