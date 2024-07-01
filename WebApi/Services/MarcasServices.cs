@@ -53,6 +53,46 @@ namespace WebApi.Services
                 throw new Exception("Sucedio un error catastrofico: " + ex.Message);
             }
         }
+
+        public async Task<Response<CreateMarcaDTO>> UpdateMarca(int id, CreateMarcaDTO request)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@PkMarca", id, DbType.Int32);
+                parameters.Add("@Marca", request.Nombre, DbType.String);
+
+                using (var connection = _context.Database.GetDbConnection())
+                {
+                    await connection.ExecuteAsync("spUpdateMarca", parameters, commandType: CommandType.StoredProcedure);
+                    return new Response<CreateMarcaDTO>(request, "Marca actualizada exitosamente.");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Sucedio un error catastrofico: " + ex.Message);
+            }
+        }
+
+        public async Task<Response<Marca>> DeleteMarca(int id)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@PkMarca", id, DbType.Int32);
+
+                using (var connection = _context.Database.GetDbConnection())
+                {
+                    await connection.ExecuteAsync("spDeleteMarca", parameters, commandType: CommandType.StoredProcedure);
+                    return new Response<Marca>(new Marca(), "Marca eliminada exitosamente.");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Sucedio un error catastrofico: " + ex.Message);
+            }
+        }
+
         public async Task<Response<Marca>> GetByID(int id)
         {
             try

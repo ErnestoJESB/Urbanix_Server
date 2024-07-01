@@ -52,5 +52,64 @@ namespace WebApi.Services
                 throw new Exception("Sucedio un error catastrofico: " + ex.Message);
             }
         }
+
+        public async Task<Response<CreateModeloDTO>> UpdateModelo(int id, CreateModeloDTO request)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@PkModelo", id, DbType.Int32);
+                parameters.Add("@Modelo", request.Nombre, DbType.String);
+                parameters.Add("@FkMarca", request.FkMarca, DbType.Int32);
+                using (var connection = _context.Database.GetDbConnection())
+                {
+                    await connection.ExecuteAsync("spUpdateModelo", parameters, commandType: CommandType.StoredProcedure);
+                    return new Response<CreateModeloDTO>(request, "Modelo actualizado exitosamente.");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Sucedio un error catastrofico: " + ex.Message);
+            }
+        }
+
+        public async Task<Response<Modelo>> DeleteModelo(int id)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@PkModelo", id, DbType.Int32);
+                using (var connection = _context.Database.GetDbConnection())
+                {
+                    await connection.ExecuteAsync("spDeleteModelo", parameters, commandType: CommandType.StoredProcedure);
+                    return new Response<Modelo>(new Modelo(), "Modelo eliminado exitosamente.");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Sucedio un error catastrofico: " + ex.Message);
+            }
+        }
+
+        public async Task<Response<ModelosDTO>> GetModeloById(int id)
+        {
+            try
+            {
+                ModelosDTO response = new ModelosDTO();
+                var result = await _context.Database.GetDbConnection().QueryAsync<ModelosDTO>(
+                    "spGetByIdModelo",
+                    new { PkModelo = id },
+                    commandType: CommandType.StoredProcedure
+                );
+
+                response = result.FirstOrDefault();
+
+                return new Response<ModelosDTO>(response);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Sucedio un error catastrofico: " + ex.Message);
+            }
+        }
     }
 }

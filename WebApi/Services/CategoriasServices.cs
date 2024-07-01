@@ -53,6 +53,46 @@ namespace WebApi.Services
                 throw new Exception("Sucedio un error catastrofico: " + ex.Message);
             }
         }
+
+        public async Task<Response<CrearCategoriasDTO>> UpdateCategoria(int id, CrearCategoriasDTO request)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@PkCategoria", id, DbType.Int32);
+                parameters.Add("@Categoria", request.Nombre, DbType.String);
+
+                using (var connection = _context.Database.GetDbConnection())
+                {
+                    await connection.ExecuteAsync("spUpdateCategoria", parameters, commandType: CommandType.StoredProcedure);
+                    return new Response<CrearCategoriasDTO>(request, "Categoria actualizada exitosamente.");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Sucedio un error catastrofico: " + ex.Message);
+            }
+        }
+
+        public async Task<Response<Categoria>> DeleteCategoria(int id)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@PkCategoria", id, DbType.Int32);
+
+                using (var connection = _context.Database.GetDbConnection())
+                {
+                    await connection.ExecuteAsync("spDeleteCategoria", parameters, commandType: CommandType.StoredProcedure);
+                    return new Response<Categoria>(new Categoria(), "Categoria eliminada exitosamente.");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Sucedio un error catastrofico: " + ex.Message);
+            }
+        }
+
         public async Task<Response<Categoria>> GetByID(int id)
         {
             try

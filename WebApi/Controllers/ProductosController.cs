@@ -44,5 +44,12 @@ namespace WebApi.Controllers
             return Ok(response);
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetProductoById(int id)
+        {
+            var response = await _productosServices.GetProductoById(id);
+            return Ok(response);
+        }
+
     }
 }

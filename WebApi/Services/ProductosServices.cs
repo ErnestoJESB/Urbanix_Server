@@ -108,5 +108,27 @@ namespace WebApi.Services
                 throw new Exception("Sucedió un error macabro: " + ex.Message);
             }
         }
+
+        public async Task<Response<ProductosDTO>> GetProductoById(int id)
+        {
+            try
+            {
+                ProductosDTO response = new ProductosDTO();
+
+                var result = await _context.Database.GetDbConnection().QueryAsync<ProductosDTO>(
+                    "spGetByIdProduct",
+                    new { PkProducto = id },
+                    commandType: CommandType.StoredProcedure
+                );
+
+                response = result.FirstOrDefault();
+
+                return new Response<ProductosDTO>(response);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Sucedio un error catastrofico: " + ex.Message);
+            }
+        }
     }
 }
