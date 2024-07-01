@@ -115,18 +115,20 @@ namespace WebApi.Services
                 parameters.Add("@correo", request.email, DbType.String);
                 parameters.Add("@password", request.password, DbType.String);
                 parameters.Add("@resultado", dbType: DbType.String, size: 250, direction: ParameterDirection.Output);
+                parameters.Add("@rol", dbType: DbType.String, size: 25, direction: ParameterDirection.Output);
 
                 using (var connection = _context.Database.GetDbConnection())
                 {
                     await connection.ExecuteAsync("spLoginUser", parameters, commandType: CommandType.StoredProcedure);
                     var resultado = parameters.Get<string>("@resultado");
+                    var rol = parameters.Get<string>("@rol");
 
                     if (resultado.StartsWith("Error"))
                     {
-                        return new Response<string>(resultado);
+                        return new Response<string>(null, resultado);
                     }
 
-                    return new Response<string>("Login exitoso.", resultado);
+                    return new Response<string>(rol, "Usuario logueado exitosamente.");
                 }
             }
             catch (Exception ex)
