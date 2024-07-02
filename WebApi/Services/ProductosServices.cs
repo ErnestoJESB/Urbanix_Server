@@ -2,8 +2,10 @@
 using Domain.DTOs.Productos;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Data;
 using WebApi.Context;
+using WebApi.Helpers;
 
 namespace WebApi.Services
 {
@@ -20,15 +22,23 @@ namespace WebApi.Services
         {
             try
             {
-                List<ProductosDTO> response = new List<ProductosDTO>();
-
-                var result = await _context.Database.GetDbConnection().QueryAsync<ProductosDTO>(
+                var result = await _context.Database.GetDbConnection().QueryAsync<ProductoTempDTO>(
                     "spGetProductos",
                     new { },
                     commandType: CommandType.StoredProcedure
                 );
 
-                response = result.ToList();
+                var response = result.Select(item => new ProductosDTO
+                {
+                    PkProducto = item.PkProducto,
+                    Marca = item.Marca,
+                    Modelo = item.Modelo,
+                    Genero = item.Genero,
+                    Tallas = item.Tallas.ToDoubleList(),
+                    Colores = item.Colores.ToStringList(),
+                    Categoria = item.Categoria,
+                    Precio = item.Precio
+                }).ToList();
 
                 return new Response<List<ProductosDTO>>(response);
             }
@@ -38,6 +48,8 @@ namespace WebApi.Services
             }
         }
 
+
+
         public async Task<Response<CrearProductoDTO>> CreateProducto(CrearProductoDTO request)
         {
             try
@@ -46,15 +58,15 @@ namespace WebApi.Services
                 parameters.Add("@FkMarca", request.FkMarca, DbType.Int32);
                 parameters.Add("@FkModelo", request.FkModelo, DbType.Int32);
                 parameters.Add("@FkCategoria", request.FkCategoria, DbType.Int32);
-                parameters.Add("@Color", request.Color, DbType.String);
-                parameters.Add("@Size", request.Size, DbType.String);
+                parameters.Add("@Colores", JsonConvert.SerializeObject(request.Colores), DbType.String);
+                parameters.Add("@Tallas", JsonConvert.SerializeObject(request.Tallas), DbType.String);
                 parameters.Add("@Precio", request.Precio, DbType.Double);
                 parameters.Add("@Genero", request.Genero, DbType.String);
 
                 using (var connection = _context.Database.GetDbConnection())
                 {
                     await connection.ExecuteAsync("spCreateProducto", parameters, commandType: CommandType.StoredProcedure);
-                    return new Response<CrearProductoDTO>(request, "Usuario registrado exitosamente.");
+                    return new Response<CrearProductoDTO>(request, "Producto registrado exitosamente.");
                 }
 
             }
@@ -69,12 +81,11 @@ namespace WebApi.Services
             try
             {
                 var parameters = new DynamicParameters();
-                parameters.Add("@PkProducto", id, DbType.Int32);
                 parameters.Add("@FkMarca", request.FkMarca, DbType.Int32);
                 parameters.Add("@FkModelo", request.FkModelo, DbType.Int32);
                 parameters.Add("@FkCategoria", request.FkCategoria, DbType.Int32);
-                parameters.Add("@Color", request.Color, DbType.String);
-                parameters.Add("@Size", request.Size, DbType.String);
+                parameters.Add("@Colores", JsonConvert.SerializeObject(request.Colores), DbType.String);
+                parameters.Add("@Tallas", JsonConvert.SerializeObject(request.Tallas), DbType.String);
                 parameters.Add("@Precio", request.Precio, DbType.Double);
                 parameters.Add("@Genero", request.Genero, DbType.String);
 

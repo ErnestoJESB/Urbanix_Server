@@ -11,8 +11,8 @@ namespace Domain.DTOs.Productos
         public int FkMarca { get; set; }
         public int FkModelo { get; set; }
         public string Genero { get; set; }
-        public double Size { get; set; }
-        public string Color { get; set; }
+        public List<double> Tallas { get; set; }
+        public List<string> Colores { get; set; }
         public int FkCategoria { get; set; }
         public double Precio { get; set; }
     }
