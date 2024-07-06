@@ -47,9 +47,6 @@ namespace WebApi.Services
                 throw new Exception("Sucedio un error catastrofico: " + ex.Message);
             }
         }
-
-
-
         public async Task<Response<CrearProductoDTO>> CreateProducto(CrearProductoDTO request)
         {
             try
@@ -81,6 +78,7 @@ namespace WebApi.Services
             try
             {
                 var parameters = new DynamicParameters();
+                parameters.Add("@PkProducto", id, DbType.Int32);
                 parameters.Add("@FkMarca", request.FkMarca, DbType.Int32);
                 parameters.Add("@FkModelo", request.FkModelo, DbType.Int32);
                 parameters.Add("@FkCategoria", request.FkCategoria, DbType.Int32);
@@ -124,15 +122,31 @@ namespace WebApi.Services
         {
             try
             {
-                ProductosDTO response = new ProductosDTO();
+               var parameters = new DynamicParameters();
+                parameters.Add("@PkProducto", id, DbType.Int32);
 
-                var result = await _context.Database.GetDbConnection().QueryAsync<ProductosDTO>(
+                var result = await _context.Database.GetDbConnection().QueryFirstOrDefaultAsync<ProductoTempDTO>(
                     "spGetByIdProduct",
-                    new { PkProducto = id },
+                    parameters,
                     commandType: CommandType.StoredProcedure
                 );
 
-                response = result.FirstOrDefault();
+                if (result == null)
+                {
+                    return new Response<ProductosDTO>("No se encontró el producto.");
+                }
+
+                var response = new ProductosDTO
+                {
+                    PkProducto = result.PkProducto,
+                    Marca = result.Marca,
+                    Modelo = result.Modelo,
+                    Genero = result.Genero,
+                    Tallas = result.Tallas.ToDoubleList(),
+                    Colores = result.Colores.ToStringList(),
+                    Categoria = result.Categoria,
+                    Precio = result.Precio
+                };
 
                 return new Response<ProductosDTO>(response);
             }
