@@ -10,5 +10,6 @@ namespace WebApi.Services
         public Task<Response<CrearProductoDTO>> UpdateProducto(int id, CrearProductoDTO request);
         public Task<Response<CrearProductoDTO>> DeleteProducto(int id);
         public Task<Response<ProductosDTO>> GetProductoById(int id);
+        public Task<Response<ProductoIdDTO>> GetProductoByIdUpdate(int id);
     }
 }

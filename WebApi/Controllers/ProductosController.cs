@@ -51,5 +51,12 @@ namespace WebApi.Controllers
             return Ok(response);
         }
 
+        [HttpGet("update/{id}")]
+        public async Task<IActionResult> GetProductoByIdUpdate(int id)
+        {
+            var response = await _productosServices.GetProductoByIdUpdate(id);
+            return Ok(response);
+        }
+
     }
 }
