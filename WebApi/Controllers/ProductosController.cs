@@ -58,5 +58,12 @@ namespace WebApi.Controllers
             return Ok(response);
         }
 
+        [HttpGet("category/{id}")]
+        public async Task<IActionResult> GetProductosByCategory(int id)
+        {
+            var response = await _productosServices.GetProductosByCategory(id);
+            return Ok(response);
+        }
+
     }
 }

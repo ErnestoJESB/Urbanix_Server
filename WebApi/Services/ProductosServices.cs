@@ -193,5 +193,38 @@ namespace WebApi.Services
                 throw new Exception("Sucedio un error catastrofico: " + ex.Message);
             }
         }
+
+        public async Task<Response<List<ProductosDTO>>> GetProductosByCategory(int id)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@FkCategoria", id, DbType.Int32);
+
+                var result = await _context.Database.GetDbConnection().QueryAsync<ProductoTempDTO>(
+                    "spGetProductsByCategory",
+                    parameters,
+                    commandType: CommandType.StoredProcedure
+                );
+
+                var response = result.Select(item => new ProductosDTO
+                {
+                    PkProducto = item.PkProducto,
+                    Marca = item.Marca,
+                    Modelo = item.Modelo,
+                    Genero = item.Genero,
+                    Tallas = item.Tallas.ToDoubleList(),
+                    Colores = item.Colores.ToStringList(),
+                    Categoria = item.Categoria,
+                    Precio = item.Precio
+                }).ToList();
+
+                return new Response<List<ProductosDTO>>(response);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Sucedio un error catastrofico: " + ex.Message);
+            }
+        }
     }
 }
