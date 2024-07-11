@@ -10,6 +10,6 @@ namespace WebApi.Services
         public Task<Response<ModelosDTO>> GetModeloById(int id);
         public Task<Response<CreateModeloDTO>> UpdateModelo(int id, CreateModeloDTO request);
         public Task<Response<Modelo>> DeleteModelo(int id);
-        
+        public Task<Response<ModeloIdDTO>> GetModeloByIdUpdate(int id);
     }
 }

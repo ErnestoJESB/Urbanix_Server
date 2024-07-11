@@ -9,6 +9,6 @@ namespace Domain.DTOs.Marca
     public class MarcaDTO
     {
         public int PkMarca { get; set; }
-        public string Marca { get; set; }
+        public string marca { get; set; }
     }
 }

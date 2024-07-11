@@ -8,6 +8,6 @@ namespace Domain.DTOs.Categorias
 {
     public class CrearCategoriasDTO
     {
-        public string Nombre { get; set; }
+        public string categoria { get; set; }
     }
 }

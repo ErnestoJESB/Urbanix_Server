@@ -8,6 +8,6 @@ namespace Domain.DTOs.Marca
 {
     public class CreateMarcaDTO
     {
-        public string Nombre { get; set; }
+        public string marca { get; set; }
     }
 }

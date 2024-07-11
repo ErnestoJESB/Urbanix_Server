@@ -48,5 +48,12 @@ namespace WebApi.Controllers
             var response = await _modelosServices.GetModeloById(id);
             return Ok(response);
         }
+
+        [HttpGet("update/{id}")]
+        public async Task<IActionResult> GetModeloByIdUpdate(int id)
+        {
+            var response = await _modelosServices.GetModeloByIdUpdate(id);
+            return Ok(response);
+        }
     }
 }

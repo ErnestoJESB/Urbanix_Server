@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Modelos
 {
-    public class CreateModeloDTO
+    public class ModeloIdDTO
     {
+        public int PkModelo { get; set; }
         public string modelo { get; set; }
-        public int FkMarca { get; set; }
+        public int FkMarca { get; set; }    
     }
 }

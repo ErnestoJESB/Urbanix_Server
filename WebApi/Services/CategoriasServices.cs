@@ -40,7 +40,7 @@ namespace WebApi.Services
             try
             {
                 var parameters = new DynamicParameters();
-                parameters.Add("@Nombre", request.Nombre, DbType.String);
+                parameters.Add("@Nombre", request.categoria, DbType.String);
 
                 using (var connection = _context.Database.GetDbConnection())
                 {
@@ -60,7 +60,7 @@ namespace WebApi.Services
             {
                 var parameters = new DynamicParameters();
                 parameters.Add("@PkCategoria", id, DbType.Int32);
-                parameters.Add("@Categoria", request.Nombre, DbType.String);
+                parameters.Add("@Categoria", request.categoria, DbType.String);
 
                 using (var connection = _context.Database.GetDbConnection())
                 {
