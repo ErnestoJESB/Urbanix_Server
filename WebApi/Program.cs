@@ -20,6 +20,7 @@ builder.Services.AddTransient<IMarcasServices, MarcasServices>();
 builder.Services.AddTransient<ICategoriasServices, CategoriasServices>();
 builder.Services.AddTransient<IModelosServices, ModelosServices>();
 builder.Services.AddTransient<IInventarioServices, InventarioServices>();
+builder.Services.AddTransient<IImagenServices, ImagenesServices>();
 
 
 
