@@ -8,6 +8,7 @@ namespace Domain.DTOs.Productos
 {
     public class CrearProductoDTO
     {
+        public int? PkProducto { get; set; }
         public int FkMarca { get; set; }
         public int FkModelo { get; set; }
         public string Genero { get; set; }

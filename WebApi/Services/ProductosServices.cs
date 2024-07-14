@@ -62,10 +62,16 @@ namespace WebApi.Services
 
                 using (var connection = _context.Database.GetDbConnection())
                 {
-                    await connection.ExecuteAsync("spCreateProducto", parameters, commandType: CommandType.StoredProcedure);
+                    var result = await connection.QuerySingleAsync<int>(
+                        "spCreateProducto",
+                        parameters,
+                        commandType: CommandType.StoredProcedure
+                    );
+
+                    request.PkProducto = result;
+
                     return new Response<CrearProductoDTO>(request, "Producto registrado exitosamente.");
                 }
-
             }
             catch (Exception ex)
             {
