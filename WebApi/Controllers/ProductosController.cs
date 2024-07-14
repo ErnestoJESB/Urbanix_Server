@@ -58,8 +58,8 @@ namespace WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpGet("category/{id}")]
-        public async Task<IActionResult> GetProductosByCategory(int id)
+        [HttpGet("category")]
+        public async Task<IActionResult> GetProductosByCategory([FromQuery]int? id)
         {
             var response = await _productosServices.GetProductosByCategory(id);
             return Ok(response);

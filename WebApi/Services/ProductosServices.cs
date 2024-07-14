@@ -194,7 +194,7 @@ namespace WebApi.Services
             }
         }
 
-        public async Task<Response<List<ProductosDTO>>> GetProductosByCategory(int id)
+        public async Task<Response<List<ProductosDTO>>> GetProductosByCategory(int? id)
         {
             try
             {
@@ -223,7 +223,7 @@ namespace WebApi.Services
             }
             catch (Exception ex)
             {
-                throw new Exception("Sucedio un error catastrofico: " + ex.Message);
+                throw new Exception("Sucedió un error catastrófico: " + ex.Message);
             }
         }
 
