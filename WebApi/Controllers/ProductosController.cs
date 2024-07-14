@@ -65,5 +65,19 @@ namespace WebApi.Controllers
             return Ok(response);
         }
 
+        [HttpGet("latest")]
+        public async Task<IActionResult> GetLatestProducts()
+        {
+            var response = await _productosServices.GetLatestProducts();
+            return Ok(response);
+        }
+
+        [HttpGet("unique")]
+        public async Task<IActionResult> GetUniqueProducts()
+        {
+            var response = await _productosServices.GetUniqueProducts();
+            return Ok(response);
+        }
+
     }
 }
