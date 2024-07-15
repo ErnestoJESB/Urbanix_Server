@@ -9,5 +9,6 @@ namespace Domain.DTOs.Categorias
     public class CrearCategoriasDTO
     {
         public string categoria { get; set; }
+        public string UrlImg { get; set; }
     }
 }

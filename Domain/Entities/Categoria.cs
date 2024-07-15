@@ -12,5 +12,6 @@ namespace Domain.Entities
         [Key]
         public int PkCategoria { get; set; }
         public string categoria { get; set; }
+        public string UrlImg { get; set; }
     }
 }
