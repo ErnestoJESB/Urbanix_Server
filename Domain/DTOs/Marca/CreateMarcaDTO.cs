@@ -9,5 +9,6 @@ namespace Domain.DTOs.Marca
     public class CreateMarcaDTO
     {
         public string marca { get; set; }
+        public string UrlImg { get; set; }
     }
 }

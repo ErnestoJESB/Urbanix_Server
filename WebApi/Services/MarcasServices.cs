@@ -41,6 +41,7 @@ namespace WebApi.Services
             {
                 var parameters = new DynamicParameters();
                 parameters.Add("@Nombre", request.marca, DbType.String);
+                parameters.Add("@Url", request.UrlImg, DbType.String);
 
                 using (var connection = _context.Database.GetDbConnection())
                 {
@@ -61,6 +62,7 @@ namespace WebApi.Services
                 var parameters = new DynamicParameters();
                 parameters.Add("@PkMarca", id, DbType.Int32);
                 parameters.Add("@Marca", request.marca, DbType.String);
+                parameters.Add("@Url", request.UrlImg, DbType.String);
 
                 using (var connection = _context.Database.GetDbConnection())
                 {

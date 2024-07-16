@@ -65,6 +65,13 @@ namespace WebApi.Controllers
             return Ok(response);
         }
 
+        [HttpGet("brand")]
+        public async Task<IActionResult> GetProductosByBrand([FromQuery]int? id)
+        {
+            var response = await _productosServices.GetProductosByBrand(id);
+            return Ok(response);
+        }
+
         [HttpGet("latest")]
         public async Task<IActionResult> GetLatestProducts()
         {
