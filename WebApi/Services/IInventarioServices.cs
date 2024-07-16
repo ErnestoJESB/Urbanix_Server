@@ -6,9 +6,9 @@ namespace WebApi.Services
     public interface IInventarioServices
     {
         public Task<Response<List<InventarioDTO>>> GetInventario();
-        public Task<Response<InventarioDTO>> CreateInventario(InventarioDTO request);
-        //public Task<Response<InventarioDTO>> UpdateInventario(int id, InventarioDTO request);
-        //public Task<Response<Inventario>> DeleteInventario(int id);
-        //public Task<Response<Inventario>> GetInventarioById(int id);
+        public Task<Response<CrearInventarioDTO>> CreateInventario(CrearInventarioDTO request);
+        public Task<Response<CrearInventarioDTO>> UpdateInventario(int id, CrearInventarioDTO request);
+        public Task<Response<Inventario>> DeleteInventario(int id);
+        public Task<Response<InventarioDTO>> GetInventarioById(int id);
     }
 }

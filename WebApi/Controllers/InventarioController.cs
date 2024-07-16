@@ -22,10 +22,31 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateInventario([FromBody] InventarioDTO request)
+        public async Task<IActionResult> CreateInventario([FromBody] CrearInventarioDTO request)
         {
             var response = await _inventarioServices.CreateInventario(request);
             return Ok(response);
-        }   
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateInventario(int id, [FromBody] CrearInventarioDTO request)
+        {
+            var response = await _inventarioServices.UpdateInventario(id, request);
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteInventario(int id)
+        {
+            var response = await _inventarioServices.DeleteInventario(id);
+            return Ok(response);
+        }
+
+        [HttpGet("ByProduct/{id}")]
+        public async Task<IActionResult> GetInventarioById(int id)
+        {
+            var response = await _inventarioServices.GetInventarioById(id);
+            return Ok(response);
+        }
     }
 }

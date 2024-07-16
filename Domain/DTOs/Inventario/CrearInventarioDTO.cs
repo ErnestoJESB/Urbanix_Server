@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Inventario
 {
-    public class InventarioDTO
+    public class CrearInventarioDTO
     {
-        public int PkInventario { get; set; }
         public int FkProducto { get; set; }
         public int cantidad { get; set; }
     }
