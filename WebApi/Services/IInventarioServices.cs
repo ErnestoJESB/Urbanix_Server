@@ -1,4 +1,5 @@
-﻿using Domain.DTOs.Inventario;
+﻿using Domain.DTOs.Dashboard;
+using Domain.DTOs.Inventario;
 using Domain.Entities;
 
 namespace WebApi.Services
@@ -10,5 +11,6 @@ namespace WebApi.Services
         public Task<Response<CrearInventarioDTO>> UpdateInventario(int id, CrearInventarioDTO request);
         public Task<Response<Inventario>> DeleteInventario(int id);
         public Task<Response<InventarioDTO>> GetInventarioById(int id);
+        public Task<Response<DashboardDTO>> GetResumenDashboard();
     }
 }

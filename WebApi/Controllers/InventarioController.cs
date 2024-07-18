@@ -48,5 +48,20 @@ namespace WebApi.Controllers
             var response = await _inventarioServices.GetInventarioById(id);
             return Ok(response);
         }
+
+        [HttpGet("resumen")]
+        public async Task<IActionResult> GetResumenDashboard()
+        {
+            var result = await _inventarioServices.GetResumenDashboard();
+
+            if (!result.Success)
+            {
+                return StatusCode(500, result.Message);
+            }
+
+            return Ok(result.Result);
+        }
+
+
     }
 }

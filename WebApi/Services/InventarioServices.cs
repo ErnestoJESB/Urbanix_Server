@@ -1,5 +1,8 @@
 ﻿using Dapper;
+using Domain.DTOs.Categorias;
+using Domain.DTOs.Dashboard;
 using Domain.DTOs.Inventario;
+using Domain.DTOs.Marca;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
@@ -114,6 +117,32 @@ namespace WebApi.Services
             catch (Exception ex)
             {
                 throw new Exception("Sucedio un error catastrofico: " + ex.Message);
+            }
+        }
+
+        public async Task<Response<DashboardDTO>> GetResumenDashboard()
+        {
+            try
+            {
+                using (var connection = _context.Database.GetDbConnection())
+                {
+                    var result = new DashboardDTO();
+
+                    using (var multi = await connection.QueryMultipleAsync("spGetResumenDashboard", commandType: CommandType.StoredProcedure))
+                    {
+                        result.TotalProductos = multi.Read<int>().Single();
+                        result.TotalMarcas = multi.Read<int>().Single();
+                        result.TotalCategorias = multi.Read<int>().Single();
+                        result.MarcaConMasProductos = multi.Read<MarcaMasProductoDTO>().SingleOrDefault();
+                        result.CategoriaConMasProductos = multi.Read<CategoriaMasProductosDTO>().SingleOrDefault();
+                    }
+
+                    return new Response<DashboardDTO>(result, "Resumen obtenido exitosamente");
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Response<DashboardDTO>("Sucedió un error catastrófico: " + ex.Message);
             }
         }
     }
