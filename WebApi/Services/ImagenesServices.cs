@@ -56,5 +56,49 @@ namespace WebApi.Services
                 throw new Exception("Sucedio un error catastrofico: " + ex.Message);
             }
         }
+
+        public async Task<Response<List<CreateImageDTO>>> GetMainImage()
+        {
+            try
+            {
+                List<CreateImageDTO> response = new List<CreateImageDTO>();
+                var result = await _context.Database.GetDbConnection().QueryAsync<CreateImageDTO>(
+                    "spGetMainImgProduct",
+                    new { },
+                    commandType: CommandType.StoredProcedure
+                );
+
+                response = result.ToList();
+
+                return new Response<List<CreateImageDTO>>(response);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Sucedio un error catastrofico: " + ex.Message);
+            }
+        }
+
+        public async Task<Response<List<ImagenDTO>>> GetImagesByProductId(int id)
+        {
+            try
+            {
+                List<ImagenDTO> response = new List<ImagenDTO>();
+                var parameters = new DynamicParameters();
+                parameters.Add("@PkProducto", id, DbType.Int32);    
+                var result = await _context.Database.GetDbConnection().QueryAsync<ImagenDTO>(
+                    "spGetImagesByProduct",
+                    parameters,
+                    commandType: CommandType.StoredProcedure
+                );
+
+                response = result.ToList();
+
+                return new Response<List<ImagenDTO>>(response);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Sucedio un error catastrofico: " + ex.Message);
+            }
+        }
     }
 }

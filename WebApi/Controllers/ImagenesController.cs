@@ -28,5 +28,19 @@ namespace WebApi.Controllers
             return Ok(response);
         }
 
+        [HttpGet("main")]
+        public async Task<IActionResult> GetMainImage()
+        {
+            var response = await _imagenesServices.GetMainImage();
+            return Ok(response);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetImagesByProductId(int id)
+        {
+            var response = await _imagenesServices.GetImagesByProductId(id);
+            return Ok(response);
+        }
+
     }
 }

@@ -7,5 +7,7 @@ namespace WebApi.Services
     {
         public Task<Response<List<ImagenDTO>>> GetImagenes();
         public Task<Response<CreateImageDTO>> CreateImage(CreateImageDTO request);
+        public Task<Response<List<CreateImageDTO>>> GetMainImage();
+        public Task<Response<List<ImagenDTO>>> GetImagesByProductId(int id);
     }
 }
