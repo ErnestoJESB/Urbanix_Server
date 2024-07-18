@@ -13,7 +13,7 @@ namespace WebApi.Context
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<Modelo> Modelos { get; set; }
         public DbSet<Direcciones> Direcciones { get; set; }
-
-        
+        public DbSet<Pedidos> Pedidos { get; set; }
+        public DbSet<PedidoDetalle> DetallesPedido { get; set; }
     }
 }
