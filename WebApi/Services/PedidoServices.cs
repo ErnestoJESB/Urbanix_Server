@@ -2,6 +2,7 @@
 using Domain.DTOs.DetallePedido;
 using Domain.DTOs.Pedidos;
 using Domain.DTOs.Productos;
+using Domain.DTOs.Purchase;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -116,6 +117,51 @@ namespace WebApi.Services
             catch (Exception ex)
             {
                 throw new Exception("Sucedió un error catastrófico: " + ex.Message);
+            }
+        }
+
+        public async Task<Response<int>> CreatePurchase(CreatePurchaseDTO request)
+        {
+            try
+            {
+                var detallesPedidoDataTable = new DataTable();
+                detallesPedidoDataTable.Columns.Add("FkProducto", typeof(int));
+                detallesPedidoDataTable.Columns.Add("Cantidad", typeof(int));
+                detallesPedidoDataTable.Columns.Add("Precio", typeof(decimal));
+
+                foreach (var detalle in request.DetallesPedido)
+                {
+                    detallesPedidoDataTable.Rows.Add(detalle.FkProducto, detalle.Cantidad, detalle.Precio);
+                }
+
+                var parameters = new DynamicParameters();
+                parameters.Add("FkUsuario", request.FkUsuario);
+                parameters.Add("Direccion", request.Direccion);
+                parameters.Add("Ciudad", request.Ciudad);
+                parameters.Add("Estado", request.Estado);
+                parameters.Add("Codigo_Postal", request.CodigoPostal);
+                parameters.Add("Pais", request.Pais);
+                parameters.Add("Fecha", request.Fecha);
+                parameters.Add("Total", request.Total);
+                parameters.Add("EstadoPedido", request.EstadoPedido);
+                parameters.Add("DetallesPedido", detallesPedidoDataTable.AsTableValuedParameter("dbo.DetallesPedidoType"));
+                parameters.Add("PkPedido", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+                using (var connection = _context.Database.GetDbConnection())
+                {
+                    await connection.ExecuteAsync(
+                        "spCreatePurchase",
+                        parameters,
+                        commandType: CommandType.StoredProcedure
+                    );
+
+                    var pkPedido = parameters.Get<int>("PkPedido");
+                    return new Response<int>(pkPedido, "Pedido creado exitosamente");
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Response<int>("Sucedió un error catastrófico: " + ex.Message);
             }
         }
     }

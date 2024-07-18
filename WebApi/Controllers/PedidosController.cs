@@ -1,5 +1,6 @@
 ﻿using Domain.DTOs.DetallePedido;
 using Domain.DTOs.Pedidos;
+using Domain.DTOs.Purchase;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Services;
 
@@ -64,6 +65,24 @@ namespace WebApi.Controllers
         {
             var response = await _pedidoServices.GetPedidoByUserId(id);
             return Ok(response);
+        }
+
+        [HttpPost("purchase")]
+        public async Task<IActionResult> CreatePurchase([FromBody] CreatePurchaseDTO createPurchaseDTO)
+        {
+            if (createPurchaseDTO == null)
+            {
+                return BadRequest("La solicitud no puede ser nula");
+            }
+
+            var result = await _pedidoServices.CreatePurchase(createPurchaseDTO);
+
+            if (!result.Success)
+            {
+                return StatusCode(500, result.Message);
+            }
+
+            return Ok(new { mensaje = "Compra creada exitosamente", PkPedido = result.Result });
         }
     }
 }
