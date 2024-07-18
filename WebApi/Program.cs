@@ -22,6 +22,7 @@ builder.Services.AddTransient<IModelosServices, ModelosServices>();
 builder.Services.AddTransient<IInventarioServices, InventarioServices>();
 builder.Services.AddTransient<IImagenServices, ImagenesServices>();
 builder.Services.AddTransient<IDireccionesServices, DireccionesServices>();
+builder.Services.AddTransient<IPedidoServices, PedidoServices>();
 
 
 

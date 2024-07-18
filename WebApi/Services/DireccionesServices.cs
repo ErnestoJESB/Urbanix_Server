@@ -58,6 +58,7 @@ namespace WebApi.Services
                 parameters.Add("Estado", request.estado);
                 parameters.Add("Codigo_postal", request.codigo_postal);
                 parameters.Add("Pais", request.pais);
+                parameters.Add("PkDireccion", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
                 using (var connection = _context.Database.GetDbConnection())
                 {
@@ -67,14 +68,18 @@ namespace WebApi.Services
                         commandType: CommandType.StoredProcedure
                     );
 
+                    var pkDireccion = parameters.Get<int>("PkDireccion");
+                    request.PkDireccion = pkDireccion;
+
                     return new Response<CreateDireccionesDTO>(request);
-                }            
+                }
             }
             catch (Exception ex)
             {
-                throw new Exception("Sucedio un error catastrofico: " + ex.Message);
+                throw new Exception("Sucedió un error catastrófico: " + ex.Message);
             }
         }
+
 
         public async Task<Response<CreateDireccionesDTO>> UpdateDireccion(int id, CreateDireccionesDTO request)
         {
