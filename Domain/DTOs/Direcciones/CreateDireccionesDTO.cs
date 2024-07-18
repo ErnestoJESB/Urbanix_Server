@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Direcciones
 {
-    public class DireccionesDTO
+    public class CreateDireccionesDTO
     {
-        public int PkDireccion { get; set; }
+        public int? PkDireccion { get; set; }
         public int FkUsuario { get; set; }
         public string direccion { get; set; }
         public string ciudad { get; set; }
